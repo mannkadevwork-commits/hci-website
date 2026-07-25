@@ -334,19 +334,25 @@ const ServicesDetailPage = async ({ searchParams }) => {
         <div className="city-hero w-100">
           <Image 
             // src={pageData?.location_image || '/images/wework_bgImage.jpg'} 
-            src={getBackendImageUrl('/parent-child/wework_bgImage.94f57400.jpg')}
-            alt={`${displayCity} Interior Design`}
+            src={pageData?.banner_image ? getBackendImageUrl(pageData.banner_image) : getBackendImageUrl('/parent-child/wework_bgImage.94f57400.jpg')}
+            alt={
+              pageData?.banner_title ||
+              pageData?.main_title ||
+              `${displayCity} Interior Design`
+            }
             fill priority sizes="100vw" style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
           />
           {/* <div className="hero-overlay"></div> */}
           <div className="container hero-content font-poppins">
             <div className="hero-badge"><FaMapMarkerAlt className="me-2" /> High Creation Interior in {displayCity}</div>
             <h1 className="hero-main-title fw-bold mb-3 font-outfit text-white" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.9)' }}>
-              {pageData?.main_title || `Interior Designers in ${displayCity}`}
+              {pageData?.banner_title || pageData?.main_title || `Interior Designers in ${displayCity}`}
             </h1>
-            {/* <p className="fs-5 text-white mx-auto" style={{ maxWidth: '700px', opacity: 0.9 }}>
-              Elevating lifestyles with bespoke, luxury interiors tailored for homes in {displayCity}.
-            </p> */}
+            {pageData?.banner_subtitle && (
+              <p className="fs-5 text-white mx-auto" style={{ maxWidth: '700px', opacity: 0.9 }}>
+                {pageData.banner_subtitle}
+              </p>
+            )}
           </div>
         </div>
 
