@@ -28,6 +28,15 @@ const cityUrlMap = {
   "dwarka": "/interior-designers-in-dwarka",
 };
 
+// 👇 ADDED: City Banner Map for dynamic nearby cities images
+const cityBannerMap = {
+  "delhi": "/images/nearby cities/Delhi.png",
+  "faridabad": "/images/nearby cities/Faridabad.png",
+  "gurugram": "/images/nearby cities/Gurugram.png",
+  "noida": "/images/nearby cities/Noida.png",
+  "greater_noida": "/images/nearby cities/Greater Noida.png",
+};
+
 // 🌟 EXPANDED SUB-CITY LOGIC: Clean, robust list for the new sidebar widget
 const subCitiesMap = {
   "noida": [
@@ -599,7 +608,7 @@ const ServicesDetailPage = async ({ searchParams }) => {
           </div>
         </div>
 
-        {/* --- NEARBY MAJOR CITIES AT THE BOTTOM --- */}
+        {/* 👇 UPDATED: NEARBY MAJOR CITIES AT THE BOTTOM WITH DYNAMIC BANNERS */}
         {otherCities.length > 0 && (
           <div className="container mt-5 pt-5 border-top">
             <div className="d-flex justify-content-between align-items-end mb-4">
@@ -607,20 +616,31 @@ const ServicesDetailPage = async ({ searchParams }) => {
               <Link href="/services" className="text-decoration-none fw-bold small text-gradient">VIEW ALL CITIES <FaArrowRight /></Link>
             </div>
             <div className="row g-4 mobile-slider-wrapper">
-              {otherCities.map((cityName, idx) => (
-                <div className="col-lg-4" key={idx}>
-                  <Link href={cityUrlMap[cityName]} className="text-decoration-none">
-                    <div className="related-card bg-white position-relative shadow-sm h-100 rounded-4 overflow-hidden">
-                      <div style={{ height: "200px", position: "relative" }}>
-                        <Image src={getBackendImageUrl('/parent-child/wework_bgImage.94f57400.jpg')} alt={cityName} fill style={{ objectFit: "cover" }} loading="lazy" />
-                        <div className="position-absolute bottom-0 start-0 p-4 w-100 text-white fw-bold" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
-                          <FaMapMarkerAlt className="me-2 text-warning" /> {cityName.replace('_', ' ').toUpperCase()}
+              {otherCities.map((cityName, idx) => {
+                // 👇 Use the mapped local image or a backend fallback if not found in the mapping
+                const cityImg = cityBannerMap[cityName] || getBackendImageUrl('/parent-child/wework_bgImage.94f57400.jpg');
+
+                return (
+                  <div className="col-lg-4" key={idx}>
+                    <Link href={cityUrlMap[cityName]} className="text-decoration-none">
+                      <div className="related-card bg-white position-relative shadow-sm h-100 rounded-4 overflow-hidden">
+                        <div style={{ height: "200px", position: "relative" }}>
+                          <Image 
+                            src={cityImg} 
+                            alt={cityName} 
+                            fill 
+                            style={{ objectFit: "cover" }} 
+                            loading="lazy" 
+                          />
+                          <div className="position-absolute bottom-0 start-0 p-4 w-100 text-white fw-bold" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
+                            <FaMapMarkerAlt className="me-2 text-warning" /> {cityName.replace('_', ' ').toUpperCase()}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+                    </Link>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
